@@ -17,9 +17,9 @@ app.get("/api/health", (req, res) => {
 });
 
 app.post("/api/favorites", async (req, res) => {
-  
+
   try {
-    const { userId, recipeId, image, cookTime, servings } = req.body;
+    const { userId, recipeId, title, image, cookTime, servings } = req.body;
 
     if(!userId || !recipeId || !title) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -30,6 +30,7 @@ app.post("/api/favorites", async (req, res) => {
     .values({
       userId,
       recipeId,
+      title,
       image,
       cookTime,
       servings
@@ -60,7 +61,7 @@ app.delete("/api/favorites/:userId/:recipeId", async (req, res) => {
     const { userId, recipeId } = req.params;
 
     await db.delete(favoritesTable).where(
-      and(eq(favoritesTable.userId, userId), eq(favoritesTable.recipeId, pareseInt(recipeId)))
+      and(eq(favoritesTable.userId, userId), eq(favoritesTable.recipeId, parseInt(recipeId)))
     )
 
     res.status(200).json({ message: "Favorite removed successfully" });
